@@ -1,6 +1,5 @@
 pipeline {
     agent any
-
     environment {
     DOCKER_TAG = getDockerTag()
     registryCredential = "dockerhub"
@@ -28,12 +27,12 @@ stages {
             sh "chmod +x changeTag.sh"
             sh "./changeTag.sh ${DOCKER_TAG}"
             sshagent(['kops-machine']) {
-            sh "scp -o StrictHostKeyChecking=no app-service.yml node-app-pod.yml ec2-user@18.212.169.39:/home/ec2-user"
+            sh "scp -o StrictHostKeyChecking=no app-service.yml node-app-pod.yml ec2-user@54.221.68.114:/home/ec2-user"
             script {
                 try {
-                    sh "ssh ec2-user@3.85.169.2 kubectl apply -f . -n production"
+                    sh "ssh ec2-user@54.221.68.114 kubectl apply -f . -n production"
                 }catch(error) {
-                    sh "ssh ec2-user@3.85.169.2 kubectl create -f . -n production"
+                    sh "ssh ec2-user@54.221.68.114 kubectl create -f . -n production"
                 }
              }
             }
